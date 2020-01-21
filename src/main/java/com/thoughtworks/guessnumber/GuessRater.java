@@ -1,6 +1,6 @@
 package com.thoughtworks.guessnumber;
 
-public class SolutionRater {
+public class GuessRater {
     public Rating rateSolution(Solution solution) {
         return null;
     }

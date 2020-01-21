@@ -2,18 +2,23 @@ package com.thoughtworks.guessnumber;
 
 public class GuessNumberGame {
     private SolutionGenerator solutionGenerator;
-    private SolutionRater solutionRater;
+    private GuessPrompter guessPrompter;
+    private GuessRater guessRater;
 
-    public GuessNumberGame(SolutionGenerator solutionGenerator, SolutionRater solutionRater) {
+    public GuessNumberGame(SolutionGenerator solutionGenerator, GuessPrompter guessPrompter, GuessRater guessRater) {
         this.solutionGenerator = solutionGenerator;
-        this.solutionRater = solutionRater;
+        this.guessPrompter = guessPrompter;
+        this.guessRater = guessRater;
     }
 
     public void play() {
         Solution solution = solutionGenerator.generateSolution();
         for (int i = 0; i < 6; i++) {
-            Solution guess = new Solution(5, 6, 7, 8);
-            solutionRater.rateSolution(guess);
+            Solution guess = guessPrompter.prompt();
+            Rating rating = guessRater.rateSolution(guess);
+            if (rating.getInPlaceMatches() == 4) {
+                break;
+            }
         }
     }
 }

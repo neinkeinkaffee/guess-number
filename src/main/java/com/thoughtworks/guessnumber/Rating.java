@@ -8,4 +8,12 @@ public class Rating {
         this.inPlaceMatches = inPlaceMatches;
         this.outOfPlaceMatches = outOfPlaceMatches;
     }
+
+    public int getInPlaceMatches() {
+        return inPlaceMatches;
+    }
+
+    public int getOutOfPlaceMatches() {
+        return outOfPlaceMatches;
+    }
 }
