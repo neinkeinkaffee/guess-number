@@ -15,7 +15,7 @@ public class GuessNumberGame {
         Solution solution = solutionGenerator.generateSolution();
         for (int i = 0; i < 6; i++) {
             Solution guess = prompter.prompt();
-            Rating rating = rater.rateSolution(guess);
+            Rating rating = rater.rateGuess(guess, solution);
             if (rating.getInPlaceMatches() == 4) {
                 break;
             }

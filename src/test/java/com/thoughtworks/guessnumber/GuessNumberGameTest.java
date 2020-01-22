@@ -13,34 +13,35 @@ public class GuessNumberGameTest {
         Prompter prompter = mock(Prompter.class);
         Rater rater = mock(Rater.class);
         when(solutionGenerator.generateSolution()).thenReturn(mock(Solution.class));
-        when(rater.rateSolution(any(Solution.class))).thenReturn(mock(Rating.class));
+        when(rater.rateGuess(any(Solution.class), any(Solution.class))).thenReturn(mock(Rating.class));
         GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, rater);
 
         guessNumberGame.play();
 
         verify(solutionGenerator, times(1)).generateSolution();
-        verify(rater, times(6)).rateSolution(any(Solution.class));
+        verify(rater, times(6)).rateGuess(any(Solution.class), any(Solution.class));
     }
 
     @Test
     public void should_stop_after_player_guesses_correct() {
         SolutionGenerator solutionGenerator = mock(SolutionGenerator.class);
         Prompter prompter = mock(Prompter.class);
+        Solution solution = mock(Solution.class);
         Solution incorrectGuess = mock(Solution.class);
         Solution correctGuess = mock(Solution.class);
-        when(solutionGenerator.generateSolution()).thenReturn(mock(Solution.class));
+        when(solutionGenerator.generateSolution()).thenReturn(solution);
         when(prompter.prompt())
                 .thenReturn(incorrectGuess)
                 .thenReturn(incorrectGuess)
                 .thenReturn(correctGuess);
         Rater rater = mock(Rater.class);
-        when(rater.rateSolution(incorrectGuess)).thenReturn(new Rating(0, 0));
-        when(rater.rateSolution(correctGuess)).thenReturn(new Rating(4, 0));
+        when(rater.rateGuess(incorrectGuess, solution)).thenReturn(new Rating(0, 0));
+        when(rater.rateGuess(correctGuess, solution)).thenReturn(new Rating(4, 0));
         GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, rater);
 
         guessNumberGame.play();
 
         verify(solutionGenerator, times(1)).generateSolution();
-        verify(rater, times(3)).rateSolution(any(Solution.class));
+        verify(rater, times(3)).rateGuess(any(Solution.class), any(Solution.class));
     }
 }
