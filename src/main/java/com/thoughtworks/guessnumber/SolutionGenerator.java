@@ -1,7 +1,7 @@
 package com.thoughtworks.guessnumber;
 
 public class SolutionGenerator {
-    public Solution generateSolution() {
+    public NumberCombination generateSolution() {
         return null;
     }
 }

@@ -3,7 +3,7 @@
 ## Todo List
 
 Game flow (GuessNumberGame)
-* Should let player guess the solution up to six times
+* Should let player guess the numberCombination up to six times
 * Should stop after player guesses correct
 
 Rater

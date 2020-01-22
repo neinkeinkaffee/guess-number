@@ -12,10 +12,10 @@ public class GuessNumberGame {
     }
 
     public void play() {
-        Solution solution = solutionGenerator.generateSolution();
+        NumberCombination numberCombination = solutionGenerator.generateSolution();
         for (int i = 0; i < 6; i++) {
-            Solution guess = prompter.prompt();
-            Rating rating = rater.rateGuess(guess, solution);
+            NumberCombination guess = prompter.prompt();
+            Rating rating = rater.rateGuess(guess, numberCombination);
             if (rating.getInPlaceMatches() == 4) {
                 break;
             }
