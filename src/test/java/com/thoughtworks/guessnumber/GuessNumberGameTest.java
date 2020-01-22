@@ -2,6 +2,7 @@ package com.thoughtworks.guessnumber;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class GuessNumberGameTest {
@@ -22,9 +23,10 @@ public class GuessNumberGameTest {
         when(rater.rateGuess(incorrectGuessParsed, solution)).thenReturn(allWrongRating);
         GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, parser, rater);
 
-        guessNumberGame.play();
+        String result = guessNumberGame.play();
 
         verify(prompter, times(6)).prompt();
+        assertEquals(result, "You lose.");
     }
 
     @Test
@@ -40,8 +42,8 @@ public class GuessNumberGameTest {
                 .thenReturn(incorrectGuess)
                 .thenReturn(correctGuess);
         Parser parser = mock(Parser.class);
-        NumberCombination incorrectGuessParsed = mock(NumberCombination.class);
-        NumberCombination correctGuessParsed = mock(NumberCombination.class);
+        NumberCombination incorrectGuessParsed = NumberCombination.from(incorrectGuess);
+        NumberCombination correctGuessParsed = NumberCombination.from(correctGuess);
         when(parser.parse(incorrectGuess)).thenReturn(incorrectGuessParsed);
         when(parser.parse(correctGuess)).thenReturn(correctGuessParsed);
         Rater rater = mock(Rater.class);
@@ -49,8 +51,9 @@ public class GuessNumberGameTest {
         when(rater.rateGuess(correctGuessParsed, solution)).thenReturn(new Rating(4, 0));
         GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, parser, rater);
 
-        guessNumberGame.play();
+        String result = guessNumberGame.play();
 
         verify(prompter, times(3)).prompt();
+        assertEquals(result, "You win.");
     }
 }

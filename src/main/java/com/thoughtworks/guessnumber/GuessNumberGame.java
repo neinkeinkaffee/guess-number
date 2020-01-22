@@ -13,15 +13,16 @@ public class GuessNumberGame {
         this.rater = rater;
     }
 
-    public void play() {
+    public String play() {
         NumberCombination numberCombination = solutionGenerator.generateSolution();
         for (int i = 0; i < 6; i++) {
             String guess = prompter.prompt();
             NumberCombination parsedGuess = parser.parse(guess);
             Rating rating = rater.rateGuess(parsedGuess, numberCombination);
             if (rating.getInPlaceMatches() == 4) {
-                break;
+                return "You win.";
             }
         }
+        return "You lose.";
     }
 }
