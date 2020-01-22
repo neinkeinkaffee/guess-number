@@ -1,7 +1,7 @@
 package com.thoughtworks.guessnumber;
 
 public class Prompter {
-    public NumberCombination prompt() {
+    public String prompt() {
         return null;
     }
 }

@@ -2,7 +2,6 @@ package com.thoughtworks.guessnumber;
 
 import org.junit.Test;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class GuessNumberGameTest {
@@ -13,39 +12,45 @@ public class GuessNumberGameTest {
         NumberCombination solution = mock(NumberCombination.class);
         when(solutionGenerator.generateSolution()).thenReturn(solution);
         Prompter prompter = mock(Prompter.class);
-        NumberCombination someIncorrectGuess = mock(NumberCombination.class);
-        when(prompter.prompt()).thenReturn(someIncorrectGuess);
+        String incorrectGuess = "5 6 7 8";
+        when(prompter.prompt()).thenReturn(incorrectGuess);
+        Parser parser = mock(Parser.class);
+        NumberCombination incorrectGuessParsed = mock(NumberCombination.class);
+        when(parser.parse(incorrectGuess)).thenReturn(incorrectGuessParsed);
         Rater rater = mock(Rater.class);
         Rating allWrongRating = new Rating(0, 0);
-        when(rater.rateGuess(someIncorrectGuess, solution)).thenReturn(allWrongRating);
-        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, rater);
+        when(rater.rateGuess(incorrectGuessParsed, solution)).thenReturn(allWrongRating);
+        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, parser, rater);
 
         guessNumberGame.play();
 
-        verify(solutionGenerator, times(1)).generateSolution();
         verify(prompter, times(6)).prompt();
     }
 
     @Test
     public void should_stop_after_player_guesses_correct() {
         SolutionGenerator solutionGenerator = mock(SolutionGenerator.class);
+        NumberCombination solution = mock(NumberCombination.class);
+        when(solutionGenerator.generateSolution()).thenReturn(solution);
         Prompter prompter = mock(Prompter.class);
-        NumberCombination numberCombination = mock(NumberCombination.class);
-        NumberCombination incorrectGuess = mock(NumberCombination.class);
-        NumberCombination correctGuess = mock(NumberCombination.class);
-        when(solutionGenerator.generateSolution()).thenReturn(numberCombination);
+        String incorrectGuess = "5 6 7 8";
+        String correctGuess = "1 2 3 4";
         when(prompter.prompt())
                 .thenReturn(incorrectGuess)
                 .thenReturn(incorrectGuess)
                 .thenReturn(correctGuess);
+        Parser parser = mock(Parser.class);
+        NumberCombination incorrectGuessParsed = mock(NumberCombination.class);
+        NumberCombination correctGuessParsed = mock(NumberCombination.class);
+        when(parser.parse(incorrectGuess)).thenReturn(incorrectGuessParsed);
+        when(parser.parse(correctGuess)).thenReturn(correctGuessParsed);
         Rater rater = mock(Rater.class);
-        when(rater.rateGuess(incorrectGuess, numberCombination)).thenReturn(new Rating(0, 0));
-        when(rater.rateGuess(correctGuess, numberCombination)).thenReturn(new Rating(4, 0));
-        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, rater);
+        when(rater.rateGuess(incorrectGuessParsed, solution)).thenReturn(new Rating(0, 0));
+        when(rater.rateGuess(correctGuessParsed, solution)).thenReturn(new Rating(4, 0));
+        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, parser, rater);
 
         guessNumberGame.play();
 
-        verify(solutionGenerator, times(1)).generateSolution();
         verify(prompter, times(3)).prompt();
     }
 }
