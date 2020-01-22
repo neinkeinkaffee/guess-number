@@ -10,16 +10,20 @@ public class GuessNumberGameTest {
     @Test
     public void should_grant_player_six_guesses_maximum() {
         SolutionGenerator solutionGenerator = mock(SolutionGenerator.class);
+        NumberCombination solution = mock(NumberCombination.class);
+        when(solutionGenerator.generateSolution()).thenReturn(solution);
         Prompter prompter = mock(Prompter.class);
+        NumberCombination someIncorrectGuess = mock(NumberCombination.class);
+        when(prompter.prompt()).thenReturn(someIncorrectGuess);
         Rater rater = mock(Rater.class);
-        when(solutionGenerator.generateSolution()).thenReturn(mock(NumberCombination.class));
-        when(rater.rateGuess(any(NumberCombination.class), any(NumberCombination.class))).thenReturn(mock(Rating.class));
+        Rating allWrongRating = new Rating(0, 0);
+        when(rater.rateGuess(someIncorrectGuess, solution)).thenReturn(allWrongRating);
         GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, rater);
 
         guessNumberGame.play();
 
         verify(solutionGenerator, times(1)).generateSolution();
-        verify(rater, times(6)).rateGuess(any(NumberCombination.class), any(NumberCombination.class));
+        verify(prompter, times(6)).prompt();
     }
 
     @Test
@@ -42,6 +46,6 @@ public class GuessNumberGameTest {
         guessNumberGame.play();
 
         verify(solutionGenerator, times(1)).generateSolution();
-        verify(rater, times(3)).rateGuess(any(NumberCombination.class), any(NumberCombination.class));
+        verify(prompter, times(3)).prompt();
     }
 }
