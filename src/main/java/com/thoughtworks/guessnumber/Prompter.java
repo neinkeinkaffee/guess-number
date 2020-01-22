@@ -1,6 +1,6 @@
 package com.thoughtworks.guessnumber;
 
-public class GuessPrompter {
+public class Prompter {
     public Solution prompt() {
         return null;
     }
