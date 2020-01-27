@@ -15,13 +15,11 @@ public class GuessNumberGameTest {
         Prompter prompter = mock(Prompter.class);
         String incorrectGuess = "5 6 7 8";
         when(prompter.prompt()).thenReturn(incorrectGuess);
-        Parser parser = mock(Parser.class);
-        NumberCombination incorrectGuessParsed = mock(NumberCombination.class);
-        when(parser.parse(incorrectGuess)).thenReturn(incorrectGuessParsed);
+        NumberCombination incorrectGuessParsed = NumberCombination.from(incorrectGuess);
         Rater rater = mock(Rater.class);
         Rating allWrongRating = new Rating(0, 0);
         when(rater.rateGuess(incorrectGuessParsed, solution)).thenReturn(allWrongRating);
-        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, parser, rater);
+        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, rater);
 
         String result = guessNumberGame.play();
 
@@ -41,15 +39,12 @@ public class GuessNumberGameTest {
                 .thenReturn(incorrectGuess)
                 .thenReturn(incorrectGuess)
                 .thenReturn(correctGuess);
-        Parser parser = mock(Parser.class);
         NumberCombination incorrectGuessParsed = NumberCombination.from(incorrectGuess);
         NumberCombination correctGuessParsed = NumberCombination.from(correctGuess);
-        when(parser.parse(incorrectGuess)).thenReturn(incorrectGuessParsed);
-        when(parser.parse(correctGuess)).thenReturn(correctGuessParsed);
         Rater rater = mock(Rater.class);
         when(rater.rateGuess(incorrectGuessParsed, solution)).thenReturn(new Rating(0, 0));
         when(rater.rateGuess(correctGuessParsed, solution)).thenReturn(new Rating(4, 0));
-        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, parser, rater);
+        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, rater);
 
         String result = guessNumberGame.play();
 

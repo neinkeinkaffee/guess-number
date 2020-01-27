@@ -32,4 +32,31 @@ public class NumberCombination {
     public int[] getNumbers() {
         return numbers;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
+        if ((o instanceof NumberCombination)
+                && (((NumberCombination) o).getNumbers()[0] == this.getNumbers()[0])
+                && (((NumberCombination) o).getNumbers()[1] == this.getNumbers()[1])
+                && (((NumberCombination) o).getNumbers()[2] == this.getNumbers()[2])
+                && (((NumberCombination) o).getNumbers()[3] == this.getNumbers()[3])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 0;
+        for (int i = 0; i < numbers.length; i++)
+        result += (int) (numbers[i] / 11);
+        return result;
+    }
 }
