@@ -14,7 +14,7 @@ public class GuessNumberGame {
     public void play() {
         NumberCombination numberCombination = solutionGenerator.generateSolution();
         for (int i = 0; i < 6; i++) {
-            String guess = terminal.prompt();
+            String guess = terminal.prompt("Please take a guess");
             NumberCombination parsedGuess = NumberCombination.from(guess);
             Rating rating = rater.rateGuess(parsedGuess, numberCombination);
             if (rating.getInPlaceMatches() == 4) {

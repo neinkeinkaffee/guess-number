@@ -14,7 +14,7 @@ public class GuessNumberGameTest {
         when(solutionGenerator.generateSolution()).thenReturn(solution);
         Terminal terminal = mock(Terminal.class);
         String incorrectGuess = "5 6 7 8";
-        when(terminal.prompt()).thenReturn(incorrectGuess);
+        when(terminal.prompt("Please take a guess")).thenReturn(incorrectGuess);
         NumberCombination incorrectGuessParsed = NumberCombination.from(incorrectGuess);
         Rater rater = mock(Rater.class);
         Rating allWrongRating = new Rating(0, 0);
@@ -23,7 +23,7 @@ public class GuessNumberGameTest {
 
         guessNumberGame.play();
 
-        verify(terminal, times(6)).prompt();
+        verify(terminal, times(6)).prompt("Please take a guess");
         verify(terminal, times(1)).alert("You lose.");
     }
 
@@ -35,7 +35,7 @@ public class GuessNumberGameTest {
         Terminal terminal = mock(Terminal.class);
         String incorrectGuess = "5 6 7 8";
         String correctGuess = "1 2 3 4";
-        when(terminal.prompt())
+        when(terminal.prompt("Please take a guess"))
                 .thenReturn(incorrectGuess)
                 .thenReturn(incorrectGuess)
                 .thenReturn(correctGuess);
@@ -48,7 +48,7 @@ public class GuessNumberGameTest {
 
         guessNumberGame.play();
 
-        verify(terminal, times(3)).prompt();
+        verify(terminal, times(3)).prompt("Please take a guess");
         verify(terminal, times(1)).alert("You win.");
     }
 }
