@@ -2,25 +2,26 @@ package com.thoughtworks.guessnumber;
 
 public class GuessNumberGame {
     private SolutionGenerator solutionGenerator;
-    private Prompter prompter;
+    private Terminal terminal;
     private Rater rater;
 
-    public GuessNumberGame(SolutionGenerator solutionGenerator, Prompter prompter, Rater rater) {
+    public GuessNumberGame(SolutionGenerator solutionGenerator, Terminal terminal, Rater rater) {
         this.solutionGenerator = solutionGenerator;
-        this.prompter = prompter;
+        this.terminal = terminal;
         this.rater = rater;
     }
 
-    public String play() {
+    public void play() {
         NumberCombination numberCombination = solutionGenerator.generateSolution();
         for (int i = 0; i < 6; i++) {
-            String guess = prompter.prompt();
+            String guess = terminal.prompt();
             NumberCombination parsedGuess = NumberCombination.from(guess);
             Rating rating = rater.rateGuess(parsedGuess, numberCombination);
             if (rating.getInPlaceMatches() == 4) {
-                return "You win.";
+                terminal.alert("You win.");
+                break;
             }
         }
-        return "You lose.";
+        terminal.alert("You lose.");
     }
 }

@@ -12,19 +12,19 @@ public class GuessNumberGameTest {
         SolutionGenerator solutionGenerator = mock(SolutionGenerator.class);
         NumberCombination solution = mock(NumberCombination.class);
         when(solutionGenerator.generateSolution()).thenReturn(solution);
-        Prompter prompter = mock(Prompter.class);
+        Terminal terminal = mock(Terminal.class);
         String incorrectGuess = "5 6 7 8";
-        when(prompter.prompt()).thenReturn(incorrectGuess);
+        when(terminal.prompt()).thenReturn(incorrectGuess);
         NumberCombination incorrectGuessParsed = NumberCombination.from(incorrectGuess);
         Rater rater = mock(Rater.class);
         Rating allWrongRating = new Rating(0, 0);
         when(rater.rateGuess(incorrectGuessParsed, solution)).thenReturn(allWrongRating);
-        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, rater);
+        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, terminal, rater);
 
-        String result = guessNumberGame.play();
+        guessNumberGame.play();
 
-        verify(prompter, times(6)).prompt();
-        assertEquals(result, "You lose.");
+        verify(terminal, times(6)).prompt();
+        verify(terminal, times(1)).alert("You lose.");
     }
 
     @Test
@@ -32,10 +32,10 @@ public class GuessNumberGameTest {
         SolutionGenerator solutionGenerator = mock(SolutionGenerator.class);
         NumberCombination solution = mock(NumberCombination.class);
         when(solutionGenerator.generateSolution()).thenReturn(solution);
-        Prompter prompter = mock(Prompter.class);
+        Terminal terminal = mock(Terminal.class);
         String incorrectGuess = "5 6 7 8";
         String correctGuess = "1 2 3 4";
-        when(prompter.prompt())
+        when(terminal.prompt())
                 .thenReturn(incorrectGuess)
                 .thenReturn(incorrectGuess)
                 .thenReturn(correctGuess);
@@ -44,11 +44,11 @@ public class GuessNumberGameTest {
         Rater rater = mock(Rater.class);
         when(rater.rateGuess(incorrectGuessParsed, solution)).thenReturn(new Rating(0, 0));
         when(rater.rateGuess(correctGuessParsed, solution)).thenReturn(new Rating(4, 0));
-        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, prompter, rater);
+        GuessNumberGame guessNumberGame = new GuessNumberGame(solutionGenerator, terminal, rater);
 
-        String result = guessNumberGame.play();
+        guessNumberGame.play();
 
-        verify(prompter, times(3)).prompt();
-        assertEquals(result, "You win.");
+        verify(terminal, times(3)).prompt();
+        verify(terminal, times(1)).alert("You win.");
     }
 }
