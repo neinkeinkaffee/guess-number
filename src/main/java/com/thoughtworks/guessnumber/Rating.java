@@ -16,4 +16,9 @@ public class Rating {
     public int getOutOfPlaceMatches() {
         return outOfPlaceMatches;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%dA%dB", this.inPlaceMatches, this.outOfPlaceMatches);
+    }
 }
